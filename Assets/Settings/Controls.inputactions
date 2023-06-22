@@ -1,0 +1,54 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Main Game",
+            "id": "ac28dcd0-f0f0-41af-95f4-cc5ab11ebf8d",
+            "actions": [
+                {
+                    "name": "Point",
+                    "type": "Value",
+                    "id": "9f57f35b-d5dd-4d3d-9574-831977d92d9c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "PointHold",
+                    "type": "PassThrough",
+                    "id": "aeba4bfc-e000-44f3-bdb0-a8cbf5a1ca6b",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cae6a690-dca3-4cc1-bbed-6ef50211b76e",
+                    "path": "<Mouse>/position",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2d27c9eb-c8f7-4bfe-b6c7-24fae5c73be0",
+                    "path": "<Mouse>/position",
+                    "interactions": "CustomHolding",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
