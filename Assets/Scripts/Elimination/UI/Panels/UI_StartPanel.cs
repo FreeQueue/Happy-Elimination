@@ -13,12 +13,5 @@ namespace MainPackage
 				App.Main.StartGame();
 			});
 		}
-		void IPanel.OnOpen() {
-
-		}
-		void IPanel.OnUpdate() {
-		}
-		void IPanel.OnClose() {
-		}
 	}
 }

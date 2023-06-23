@@ -1,12 +1,14 @@
 #nullable enable
 
 using Elimination;
+using Elimination.Core;
 using Elimination.UI;
 
 namespace MainPackage
 {
-	partial class UI_OverPanel:IPanel<UI_OverPanel>
+	partial class UI_OverPanel : IPanel<UI_OverPanel>
 	{
+
 		void IPanel.OnCreate() {
 			_overMenu._closeButton.onClick.Add(() => {
 				App.Main.StartGame();
@@ -16,11 +18,7 @@ namespace MainPackage
 			});
 		}
 		void IPanel.OnOpen() {
-			
-		}
-		void IPanel.OnUpdate() {
-		}
-		void IPanel.OnClose() {
+			_overMenu._score.SetVar("score", Game.Score.ToString());
 		}
 	}
 }

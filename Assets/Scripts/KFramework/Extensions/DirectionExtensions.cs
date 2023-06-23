@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace KFramework
 {
-	static class DirectionExtensions
+	internal static class DirectionExtensions
 	{
 		public static Direction[] directions = { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
 		public static Vector2Int GetVector(this Direction @this) {
@@ -12,12 +12,10 @@ namespace KFramework
 				Direction.Down => Vector2Int.down,
 				Direction.Right => Vector2Int.right,
 				Direction.Left => Vector2Int.left,
-				_ => Vector2Int.zero,
+				_ => Vector2Int.zero
 			};
 		}
-		public static Vector2Int GetVector(this Direction @this, int step) {
-			return @this.GetVector() * step;
-		}
+		public static Vector2Int GetVector(this Direction @this, int step) => @this.GetVector() * step;
 
 		public static Direction? GetDirection(this Vector2 start, Vector2 end, float maxIncludedAngle = 45) {
 			Vector2 dir = (end - start).normalized;

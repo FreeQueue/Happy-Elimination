@@ -10,15 +10,11 @@ namespace KFramework
 		private readonly Dictionary<Type, IModule> _modules = new Dictionary<Type, IModule>();
 		private bool _isShutdown;
 
-		public bool Contains<T>() where T : IModule {
-			return _modules.ContainsKey(typeof(T));
-		}
+		public bool Contains<T>() where T : IModule => _modules.ContainsKey(typeof(T));
 
 		public T Init<T>() where T : IModule, new() {
 			Type type = typeof(T);
-			if (Contains<T>()) {
-				return Get<T>()!;
-			}
+			if (Contains<T>()) return Get<T>()!;
 			var module = new T();
 			_modules.Add(type, module);
 			return module;
@@ -36,11 +32,9 @@ namespace KFramework
 		}
 
 		public void Shutdown() {
-			if (_isShutdown) {
-				return;
-			}
+			if (_isShutdown) return;
 			_isShutdown = true;
-			foreach (var module in _modules.Reverse()) {
+			foreach (KeyValuePair<Type, IModule> module in _modules.Reverse()) {
 				_modules.Remove(module.Key);
 				module.Value.Shutdown();
 			}

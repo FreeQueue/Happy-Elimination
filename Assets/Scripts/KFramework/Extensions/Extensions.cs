@@ -42,16 +42,13 @@ namespace KFramework.Extensions
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async UniTask<T> apply<T>(this T @this, Func<T, UniTask>? action) {
-			if (action is not null) {
-				await action(@this);
-			}
+			if (action is not null) await action(@this);
 			return @this;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static async UniTask<TResult> let<T, TResult>(this T @this, Func<T, UniTask<TResult>> action) {
-			return await action(@this);
-		}
+		public static async UniTask<TResult> let<T, TResult>(this T @this, Func<T, UniTask<TResult>> action) =>
+			await action(@this);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async UniTask<TResult?> apply<T, TResult>(this T @this, Func<T, UniTask<TResult>>? action) {

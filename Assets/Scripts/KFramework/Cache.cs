@@ -26,23 +26,22 @@ namespace KFramework
 			_loader = loader ?? throw new ArgumentNullException(nameof(loader));
 			_cache = new Dictionary<TKey, TValue>(comparer);
 		}
-		public Cache(Func<TKey, TValue> loader) : this(loader, EqualityComparer<TKey>.Default) { }
-		public TValue this[TKey key] => _cache.TryGetValue(key, out TValue value) ? value :_cache[key] = _loader(key);
-		public bool ContainsKey(TKey key) => _cache.ContainsKey(key);
-		public bool TryGetValue(TKey key, out TValue value) => _cache.TryGetValue(key, out value);
-		public int Count => _cache.Count;
-		public void Clear() => _cache.Clear();
+		public Cache(Func<TKey, TValue> loader) : this(loader, EqualityComparer<TKey>.Default) {
+		}
 
 		public ICollection<TKey> Keys => _cache.Keys;
 		public ICollection<TValue> Values => _cache.Values;
+		public TValue this[TKey key] => _cache.TryGetValue(key, out TValue value) ? value : _cache[key] = _loader(key);
+		public bool ContainsKey(TKey key) => _cache.ContainsKey(key);
+		public bool TryGetValue(TKey key, out TValue value) => _cache.TryGetValue(key, out value);
+		public int Count => _cache.Count;
 
 		IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => _cache.Keys;
 
 		IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => _cache.Values;
 
 		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _cache.GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() {
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		public void Clear() => _cache.Clear();
 	}
 }

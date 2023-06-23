@@ -15,10 +15,10 @@ namespace KFramework.Extensions
 			return source.Where(x => x is not null)!;
 		}
 
-		public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T> action)
-		{
-			foreach (T obj in source)
+		public static IEnumerable<T> ForEach<T>(this IEnumerable<T> source, Action<T> action) {
+			foreach (T obj in source) {
 				action(obj);
+			}
 			return source;
 		}
 	}

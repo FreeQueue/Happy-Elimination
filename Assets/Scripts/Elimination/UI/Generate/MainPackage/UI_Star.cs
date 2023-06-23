@@ -5,21 +5,17 @@ using FairyGUI.Utils;
 
 namespace MainPackage
 {
-    public partial class UI_Star : GComponent
-    {
-        public Transition _t0;
-        public const string URL = "ui://2ax0adbwja371q";
+	public class UI_Star : GComponent
+	{
+		public const string URL = "ui://2ax0adbwja371q";
+		public Transition _t0;
 
-        public static UI_Star CreateInstance()
-        {
-            return (UI_Star)UIPackage.CreateObject("MainPackage", "Star");
-        }
+		public static UI_Star CreateInstance() => (UI_Star)UIPackage.CreateObject("MainPackage", "Star");
 
-        public override void ConstructFromXML(XML xml)
-        {
-            base.ConstructFromXML(xml);
+		public override void ConstructFromXML(XML xml) {
+			base.ConstructFromXML(xml);
 
-            _t0 = GetTransitionAt(0);
-        }
-    }
+			_t0 = GetTransitionAt(0);
+		}
+	}
 }

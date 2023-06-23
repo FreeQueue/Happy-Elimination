@@ -13,7 +13,11 @@ namespace KFramework
 	{
 		private readonly T[,] _grid;
 		public readonly Vector2Int size;
-		public event ValueChangedDelegate<T>? ValueChange;
+
+		public Grid(Vector2Int size) {
+			this.size = size;
+			_grid = new T[size.x, size.y];
+		}
 		public int X => size.x;
 		public int Y => size.y;
 		public int MaxX => X - 1;
@@ -27,25 +31,17 @@ namespace KFramework
 				_grid[x, y] = value;
 			}
 		}
-
-		public Grid(Vector2Int size) {
-			this.size = size;
-			_grid = new T[size.x, size.y];
-		}
-
-		public Grid<TOther> Create<TOther>() => new Grid<TOther>(size);
-		public bool Contains(Vector2Int coord) {
-			return _grid.Contains(coord);
-		}
-
-		public bool Contains(int x, int y) {
-			return _grid.Contains(x, y);
-		}
 		public IEnumerator<T> GetEnumerator() {
 			foreach (T item in _grid) {
 				yield return item;
 			}
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		public event ValueChangedDelegate<T>? ValueChange;
+
+		public Grid<TOther> Create<TOther>() => new Grid<TOther>(size);
+		public bool Contains(Vector2Int coord) => _grid.Contains(coord);
+
+		public bool Contains(int x, int y) => _grid.Contains(x, y);
 	}
 }

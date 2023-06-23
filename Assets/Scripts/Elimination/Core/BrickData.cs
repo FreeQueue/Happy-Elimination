@@ -9,7 +9,12 @@ namespace Elimination.Core
 	[CreateAssetMenu(fileName = "BrickData", menuName = "BrickData", order = 0)]
 	public class BrickData : ScriptableObject
 	{
-		[Header("map")] public Vector2Int mapSize;
+
+		#region Serialized Fields
+		[Header("game")] public int gameTime;
+
+		[Header("map")] public GameObject grids = null!;
+		public Vector2Int mapSize;
 		public Vector2Int mapViewSize;
 		public int solidSweetNum;
 
@@ -21,10 +26,11 @@ namespace Elimination.Core
 		public Ease fadeEase;
 		public float fadeDuration;
 
-		[Header("Sweets")] 
-		public List<Sprite> sweetSprites = null!;
+		[Header("Sweets")] public List<Sprite> sweetSprites = null!;
 		public Brick sweet = null!;
 		public Brick superSweet = null!;
 		public Brick solidSweet = null!;
+		#endregion
+
 	}
 }

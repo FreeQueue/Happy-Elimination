@@ -12,7 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da22928a82554664a8edeeead32c6a34, type: 3}
   m_Name: BrickData
   m_EditorClassIdentifier: 
-  mapSize: {x: 0, y: 0}
-  sweetSprites: []
-  sweet: {fileID: 0}
-  superSweet: {fileID: 0}
+  gameTime: 60
+  grids: {fileID: 6567038706929863849, guid: 459001460789e7f408df37d40a23c6ae, type: 3}
+  mapSize: {x: 9, y: 9}
+  mapViewSize: {x: 900, y: 900}
+  solidSweetNum: 6
+  moveDuration: 1
+  moveEase: 1
+  dragDis: 0.5
+  dragEase: 1
+  dragDuration: 0.5
+  fadeEase: 1
+  fadeDuration: 0.5
+  sweetSprites:
+  - {fileID: 21300000, guid: c7e1dea50dfe6674d900b889b978d722, type: 3}
+  - {fileID: 21300000, guid: 3cd7a079286c61c4daf48b69347d0314, type: 3}
+  - {fileID: 21300000, guid: 4069fb394f5c5e0488f3c70df279df00, type: 3}
+  - {fileID: 21300000, guid: 14ca5d95cb0e3334ba5cb01a5fd1539f, type: 3}
+  - {fileID: 21300000, guid: 413e9ccf405077a4c859e9b147cdf20c, type: 3}
+  - {fileID: 21300000, guid: 245df30f69ad76644b57744e04c7f0f0, type: 3}
+  sweet: {fileID: 7659783921674742705, guid: ab3eebb2faba1b545ba2d1b4463b03c2, type: 3}
+  superSweet: {fileID: 109503011941292719, guid: bc8999bf176d5af4b99784c50921a3dc, type: 3}
+  solidSweet: {fileID: 8426122105361148645, guid: 0a46d00a46ec5694eab0177cc88c5cf9, type: 3}

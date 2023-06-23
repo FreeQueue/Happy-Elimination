@@ -16,7 +16,7 @@ namespace Elimination.Core.Traits
 					Vector2 offset = (Vector2)direction.Value.GetVector() * Game.Data.dragDis;
 					target = target.AddXY(offset);
 				}
-				view.PlayMove(target,Game.Data.dragDuration ,Game.Data.dragEase);
+				view.PlayMove(target, Game.Data.dragDuration, Game.Data.dragEase);
 			}
 		}
 	}

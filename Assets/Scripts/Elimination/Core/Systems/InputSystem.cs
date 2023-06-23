@@ -13,10 +13,10 @@ namespace Elimination.Core.Systems
 
 		public InputSystem() {
 			actions = new MainGameActions();
-			actions.OnClick+=OnClick;
+			actions.OnClick += OnClick;
 		}
 		private void OnClick(Vector2 screenPos) {
-			Vector2Int coord= Game.View.GetCoord(screenPos);
+			Vector2Int coord = Game.View.GetCoord(screenPos);
 			Game.BrickMap[coord]?.GetTrait<ClickTrait>()?.OnClick?.Invoke();
 		}
 

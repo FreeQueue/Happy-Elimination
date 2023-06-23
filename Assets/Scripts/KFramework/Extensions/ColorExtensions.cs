@@ -6,7 +6,7 @@ namespace KFramework.Extensions
 {
 	public static class ColorExtensions
 	{
-		public static void SetA(this ref Color color,int a) {
+		public static void SetA(this ref Color color, int a) {
 			color.a = a;
 		}
 

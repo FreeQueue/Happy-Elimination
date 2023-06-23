@@ -6,7 +6,7 @@ namespace KFramework.Extensions
 	public static class Vector2Extensions
 	{
 		public static Vector2Int Abs(this Vector2Int v) => new Vector2Int(v.x.Abs(), v.y.Abs());
-		public static int Sum(this Vector2Int v) => v.x+v.y;
+		public static int Sum(this Vector2Int v) => v.x + v.y;
 		public static int Distance(this Vector2Int v1, Vector2Int v2) => (v1 - v2).Abs().Sum();
 
 		public static Vector2 Random(this Vector2 v) => new Vector2(v.x.Random(), v.y.Random());
@@ -29,9 +29,7 @@ namespace KFramework.Extensions
 		public static Vector2Int AddY(this Vector2Int @this, int y) => new Vector2Int(@this.x, @this.y + y);
 		public static Vector2 AddX(this Vector2 @this, float x) => new Vector2(@this.x + x, @this.y);
 		public static Vector2 AddY(this Vector2 @this, float y) => new Vector2(@this.x, @this.y + y);
-		public static Vector2Int FloorToInt(this Vector2 vector) {
-			return new Vector2Int(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y));
-		}
-
+		public static Vector2Int FloorToInt(this Vector2 vector) =>
+			new Vector2Int(Mathf.FloorToInt(vector.x), Mathf.FloorToInt(vector.y));
 	}
 }

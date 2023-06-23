@@ -6,9 +6,7 @@ namespace KFramework.Extensions
 {
 	public static class ArrayExtensions
 	{
-		public static bool Contains<T>(this T[,] @this, Vector2Int coord) {
-			return @this.Contains(coord.x, coord.y);
-		}
+		public static bool Contains<T>(this T[,] @this, Vector2Int coord) => @this.Contains(coord.x, coord.y);
 
 		public static bool Contains<T>(this T[,] @this, int x, int y) {
 			int lengthX = @this.GetLength(0);

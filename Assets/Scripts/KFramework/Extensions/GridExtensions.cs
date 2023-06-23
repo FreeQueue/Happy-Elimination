@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using UnityEngine;
 
@@ -17,17 +16,17 @@ namespace KFramework.Extensions
 				}
 			}
 		}
-		public static T Add<T>(this Grid<T> grid, Vector2Int coord, T item) {
+		public static T Add<T>(this Grid<T?> grid, Vector2Int coord, T item) {
 			return grid[coord] = item;
 		}
 
-		public static T? Remove<T>(this Grid<T> grid, Vector2Int coord) {
+		public static T? Remove<T>(this Grid<T?> grid, Vector2Int coord) {
 			T? removeBrick = grid[coord];
 			grid[coord] = default;
 			return removeBrick;
 		}
 
-		public static T? Move<T>(this Grid<T> grid, Vector2Int coord, Vector2Int targetCoord) {
+		public static T? Move<T>(this Grid<T?> grid, Vector2Int coord, Vector2Int targetCoord) {
 			T? moveItem = grid[coord];
 			if (moveItem is not null && coord != targetCoord) {
 				grid[coord] = default;
@@ -39,12 +38,8 @@ namespace KFramework.Extensions
 		public static (T? coord1Item, T? coord2Item) Swap<T>(this Grid<T> grid, Vector2Int coord1, Vector2Int coord2) {
 			return (grid[coord1], grid[coord2]) = (grid[coord2], grid[coord1]);
 		}
-		public static bool IsNull<T>(this Grid<T> grid, Vector2Int coord) {
-			return grid[coord] is null;
-		}
-		public static bool IsNull<T>(this Grid<T> grid, int x, int y) {
-			return grid[x, y] is null;
-		}
+		public static bool IsNull<T>(this Grid<T> grid, Vector2Int coord) => grid[coord] is null;
+		public static bool IsNull<T>(this Grid<T> grid, int x, int y) => grid[x, y] is null;
 
 		public static bool IsBoundary<T>(this Grid<T> grid, Vector2Int coord) {
 			int x = coord.x;
@@ -67,7 +62,7 @@ namespace KFramework.Extensions
 		public static IEnumerable<T?> GetInDir<T>(
 			this Grid<T> grid, Vector2Int coord, Direction direction, int num = int.MaxValue
 		) {
-			var max = grid.GetDistance(coord, direction);
+			int max = grid.GetDistance(coord, direction);
 			for (int i = 0; i < num && i < max; i++) {
 				coord += direction.GetVector();
 				yield return grid[coord];
@@ -95,7 +90,7 @@ namespace KFramework.Extensions
 		}
 
 		public static Grid<TResult> Transform<T, TResult>(this Grid<T> grid, Func<T?, TResult> action) {
-			var resultGrid = grid.Create<TResult>();
+			Grid<TResult> resultGrid = grid.Create<TResult>();
 			for (int i = 0; i < resultGrid.X; i++) {
 				for (int j = 0; j < resultGrid.Y; j++) {
 					resultGrid[i, j] = action(grid[i, j]);
@@ -107,8 +102,8 @@ namespace KFramework.Extensions
 		public static IEnumerable<T> Bfs<T>(
 			this Grid<T> grid, Vector2Int coord, Func<Grid<T>, Vector2Int, Vector2Int, bool> predicate
 		) {
-			var visited = grid.Create<bool>();
-			var queue = new Queue<Vector2Int>();
+			Grid<bool> visited = grid.Create<bool>();
+			Queue<Vector2Int> queue = new Queue<Vector2Int>();
 			queue.Enqueue(coord); // 存储已访问节点
 			while (queue.Count > 0) {
 				Vector2Int current = queue.Dequeue();
@@ -129,7 +124,7 @@ namespace KFramework.Extensions
 			this Grid<T> grid, Vector2Int coord, Func<Grid<T>, Vector2Int, Vector2Int, bool> predicate
 		) {
 			Grid<bool> visited = grid.Create<bool>();
-			var stack = new Stack<Vector2Int>();
+			Stack<Vector2Int> stack = new Stack<Vector2Int>();
 			stack.Push(coord);
 			while (stack.Count > 0) {
 				Vector2Int current = stack.Pop();

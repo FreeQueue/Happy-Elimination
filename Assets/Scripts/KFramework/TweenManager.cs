@@ -12,13 +12,13 @@ namespace KFramework
 	public class TweenManager<TId>
 	{
 		private readonly Dictionary<TId, Tween> _tweenDic;
-		public event Action<Tween>? OnAddTween;
-		public bool completeOnKill;
 		private bool _disposed;
+		public bool completeOnKill;
 		public TweenManager(bool completeOnKill = true) {
-			_tweenDic = new();
+			_tweenDic = new Dictionary<TId, Tween>();
 			this.completeOnKill = completeOnKill;
 		}
+		public event Action<Tween>? OnAddTween;
 		public T Add<T>(TId id, T tween) where T : Tween {
 			Kill(id);
 			tween.OnKill(() => {
@@ -61,7 +61,7 @@ namespace KFramework
 			KillAll(completeOnKill);
 		}
 		public void KillAll(bool complete) {
-			foreach (var pair in _tweenDic) {
+			foreach (KeyValuePair<TId, Tween> pair in _tweenDic) {
 				pair.Value.Kill(complete);
 			}
 			_tweenDic.Clear();
@@ -69,9 +69,7 @@ namespace KFramework
 
 		public async UniTask Wait(TId id, CancellationToken token = default) {
 			Tween? tween = Peek(id);
-			if (tween is not null) {
-				await tween.ToUniTask(cancellationToken: token);
-			}
+			if (tween is not null) await tween.ToUniTask(cancellationToken: token);
 		}
 
 		public async UniTask WaitAll(CancellationToken token = default) {

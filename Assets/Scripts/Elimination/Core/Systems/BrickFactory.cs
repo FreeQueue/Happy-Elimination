@@ -3,7 +3,6 @@
 using System;
 using Elimination.Core.Traits;
 using KFramework.Extensions;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Elimination.Core.Systems
@@ -13,7 +12,7 @@ namespace Elimination.Core.Systems
 		public event Action<Brick>? OnCreateBrick;
 
 		public Brick CreateRandomSweet() {
-			var id = Random.Range(0, Game.Data.sweetSprites.Count);
+			int id = Random.Range(0, Game.Data.sweetSprites.Count);
 			return CreateSweet(id);
 		}
 		private Brick CreateBrick(int id, Func<Brick> create) {
@@ -26,8 +25,7 @@ namespace Elimination.Core.Systems
 
 		public Brick CreateSuperSweet(int count) => CreateBrick(1000, () => {
 			int power = count;
-
-			var brick= Game.Data.superSweet.Instantiate();
+			Brick brick = Game.Data.superSweet.Instantiate();
 			brick.GetTrait<ExploreOnClickTrait>()!.power = power;
 			return brick;
 		});

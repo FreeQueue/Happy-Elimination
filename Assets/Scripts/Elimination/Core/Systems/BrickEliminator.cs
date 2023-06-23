@@ -17,7 +17,7 @@ namespace Elimination.Core.Systems
 				int id = brick?.GetTrait<EliminateTrait>()?.Brick.ID ?? -1;
 				return id;
 			});
-			var flagMap = brickIdMap.Create<int>();
+			Grid<int> flagMap = brickIdMap.Create<int>();
 			MarkFlag(brickIdMap, flagMap, true);
 			MarkFlag(brickIdMap, flagMap, false);
 
@@ -27,7 +27,8 @@ namespace Elimination.Core.Systems
 		}
 
 		private void EliminateFlagBrick(Grid<int> brickIdMap, Grid<int> flagMap) {
-			foreach (var coord in brickIdMap.GetCoords()) {
+			bool eliminateAny = false;
+			foreach (Vector2Int coord in brickIdMap.GetCoords()) {
 				if (brickIdMap[coord] == -1) continue;
 				int max = 0;
 				int count = 0;
@@ -42,8 +43,16 @@ namespace Elimination.Core.Systems
 					}
 					Eliminate(current);
 				}
-				Game.BrickMap.Add(maxCoord, Game.Factory.CreateSuperSweet(count));
+				switch (count) {
+					case 0: continue;
+					case > 4:
+						Game.BrickMap.Add(maxCoord, Game.Factory.CreateSuperSweet(count));
+						break;
+				}
+				eliminateAny = true;
 			}
+			if (eliminateAny) Game.View.WaitAll().GetAwaiter().OnCompleted(EliminateAll);
+			else Game.Input.SetActive(true);
 		}
 
 		private void Eliminate(Vector2Int coord) {
@@ -54,7 +63,7 @@ namespace Elimination.Core.Systems
 				int id = -1, start = 0;
 				bool paint = false;
 				for (int y = 0; y < brickIdMap.Y; y++) {
-					var coord = GetCoord(x, y);
+					Vector2Int coord = GetCoord(x, y);
 					if (brickIdMap[coord] != id) {
 						id = brickIdMap[coord];
 						start = y;
@@ -66,9 +75,7 @@ namespace Elimination.Core.Systems
 						continue;
 					}
 					int num = y - start;
-					if (id != -1 && num >= 2) {
-						paint = true;
-					}
+					if (id != -1 && num >= 2) paint = true;
 				}
 			}
 
@@ -82,16 +89,19 @@ namespace Elimination.Core.Systems
 			Vector2Int GetCoord(int x, int y) => isX ? new Vector2Int(x, y) : new Vector2Int(y, x);
 		}
 
-		public void AfterDrag(Brick moveBrick, Brick? swapBrick) {
-			moveBrick.let(CheckSameBrick).let(Eliminate);
-			swapBrick?.let(CheckSameBrick).let(Eliminate);
+		public void AfterDrag(Vector2Int moveCoord, Vector2Int swapCoord) {
+			moveCoord.let(CheckSameBrick)?.let(Eliminate);
+			swapCoord.let(CheckSameBrick)?.let(Eliminate);
+			Game.View.WaitAll().GetAwaiter().OnCompleted(EliminateAll);
 		}
 
-		private SameBrick CheckSameBrick(Brick brick) {
+		private SameBrick? CheckSameBrick(Vector2Int coord) {
+			Brick? brick = Game.BrickMap[coord];
+			if (brick is null) return null;
 			SameBrick sameBrick;
-			sameBrick.coord = brick.Coord;
+			sameBrick.coord = coord;
 			sameBrick.directions = DirectionExtensions.directions
-				.Select(direction => GetSameBrickNumInDir(brick.Coord, brick.ID, direction)).ToArray();
+				.Select(direction => GetSameBrickNumInDir(coord, brick.ID, direction)).ToArray();
 			return sameBrick;
 		}
 
@@ -107,20 +117,18 @@ namespace Elimination.Core.Systems
 			int numX = sameBrick.NumX(), numY = sameBrick.NumY();
 			List<Brick> eliminatedBricks = new List<Brick>();
 			if (numX >= 3) {
-				var xBricks = brickMap.GetInDir(sameBrick.coord, Direction.Left)
+				IEnumerable<Brick> xBricks = brickMap.GetInDir(sameBrick.coord, Direction.Left)
 					.Concat(brickMap.GetInDir(sameBrick.coord, Direction.Right)).WhereNotNull();
 				eliminatedBricks.AddRange(xBricks);
 			}
 			if (numY >= 3) {
-				var yBricks = brickMap.GetInDir(sameBrick.coord, Direction.Up)
+				IEnumerable<Brick> yBricks = brickMap.GetInDir(sameBrick.coord, Direction.Up)
 					.Concat(brickMap.GetInDir(sameBrick.coord, Direction.Down)).WhereNotNull();
 				eliminatedBricks.AddRange(yBricks);
 			}
 			eliminatedBricks.ForEach(brick => brick.GetTrait<DestroyTrait>()?.Destroy());
 			int sum = numX + numY - 1;
-			if (sum >= 4) {
-				brickMap.Add(sameBrick.coord, Game.Factory.CreateSuperSweet(sum));
-			}
+			if (sum >= 4) brickMap.Add(sameBrick.coord, Game.Factory.CreateSuperSweet(sum));
 		}
 	}
 }

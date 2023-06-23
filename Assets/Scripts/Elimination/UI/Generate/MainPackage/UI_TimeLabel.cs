@@ -5,23 +5,19 @@ using FairyGUI.Utils;
 
 namespace MainPackage
 {
-    public partial class UI_TimeLabel : GLabel
-    {
-        public GTextField _time;
-        public Transition _rotate;
-        public const string URL = "ui://2ax0adbwja371u";
+	public class UI_TimeLabel : GLabel
+	{
+		public const string URL = "ui://2ax0adbwja371u";
+		public Transition _rotate;
+		public GTextField _time;
 
-        public static UI_TimeLabel CreateInstance()
-        {
-            return (UI_TimeLabel)UIPackage.CreateObject("MainPackage", "TimeLabel");
-        }
+		public static UI_TimeLabel CreateInstance() => (UI_TimeLabel)UIPackage.CreateObject("MainPackage", "TimeLabel");
 
-        public override void ConstructFromXML(XML xml)
-        {
-            base.ConstructFromXML(xml);
+		public override void ConstructFromXML(XML xml) {
+			base.ConstructFromXML(xml);
 
-            _time = (GTextField)GetChildAt(2);
-            _rotate = GetTransitionAt(0);
-        }
-    }
+			_time = (GTextField)GetChildAt(2);
+			_rotate = GetTransitionAt(0);
+		}
+	}
 }

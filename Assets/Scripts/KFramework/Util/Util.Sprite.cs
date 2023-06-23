@@ -15,9 +15,9 @@ namespace KFramework.Utility
 			public static Vector2 TileSpriteRenderer(
 				SpriteRenderer spriteRenderer, float tilingWidth, float tilingHeight
 			) => TileSpriteRenderer(spriteRenderer, new Vector2(tilingWidth, tilingHeight));
-			
+
 			/// <summary>
-			/// 将指定的精灵渲染器进行平铺操作，返回平铺后的像素尺寸。
+			///     将指定的精灵渲染器进行平铺操作，返回平铺后的像素尺寸。
 			/// </summary>
 			/// <param name="spriteRenderer">需要进行平铺操作的精灵渲染器</param>
 			/// <param name="tilingFactor">平铺系数</param>
@@ -39,7 +39,7 @@ namespace KFramework.Utility
 			public static void ResizeSpriteToPixels(SpriteRenderer spriteRenderer, Vector2 desiredSize) {
 				USprite sprite = spriteRenderer.sprite;
 				Vector2 spriteSize = sprite.bounds.size;
-				Vector3 scale = new Vector3(desiredSize.x / spriteSize.x, desiredSize.y / spriteSize.y, 1f);
+				var scale = new Vector3(desiredSize.x / spriteSize.x, desiredSize.y / spriteSize.y, 1f);
 				spriteRenderer.transform.localScale = scale;
 			}
 		}

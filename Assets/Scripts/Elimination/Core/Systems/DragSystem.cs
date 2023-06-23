@@ -1,6 +1,7 @@
 #nullable enable
 
 using Elimination.Core.Traits;
+using Elimination.Input;
 using KFramework;
 using KFramework.Extensions;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace Elimination.Core.Systems
 		private Direction? _lastDirection;
 
 		public DragSystem() {
-			var actions = Game.Input.actions;
+			MainGameActions actions = Game.Input.actions;
 			actions.OnPointHoldStart += OnPointHoldStart;
 			actions.OnPointHoldPerform += OnPointHoldPerform;
 			actions.OnPointHoldEnd += OnPointHoldEnd;
@@ -34,10 +35,12 @@ namespace Elimination.Core.Systems
 			if (_holdBrick == null) return;
 			Direction? direction = App.Input.LastPointDown.GetDirection(screenPos, 35);
 			if (direction.HasValue) {
-				Game.BrickMap.Swap(_holdBrick.Coord, _holdBrick.Coord + direction.Value.GetVector());
-			} else {
-				_holdBrick.Coord.Value = _holdBrick.Coord;
-			}
+				MutableState<Vector2Int> moveCoord = _holdBrick.Coord;
+				Vector2Int swapCoord = moveCoord + direction.Value.GetVector();
+				Game.BrickMap.Swap(moveCoord, swapCoord);
+				Game.View.WaitAll().GetAwaiter().OnCompleted(() => Game.Eliminator.AfterDrag(moveCoord, swapCoord));
+
+			} else _holdBrick.Coord.Value = _holdBrick.Coord;
 			_holdBrick = null;
 			Game.Input.SetActive(false);
 		}

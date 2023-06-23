@@ -1,5 +1,3 @@
-using KFramework;
-
 namespace Elimination.UI
 {
 	public interface IPanel
@@ -10,7 +8,7 @@ namespace Elimination.UI
 		}
 
 		public void OnCreate() {
-			
+
 		}
 		public void OnOpen() {
 		}

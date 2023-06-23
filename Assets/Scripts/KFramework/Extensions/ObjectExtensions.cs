@@ -6,8 +6,6 @@ namespace KFramework.Extensions
 {
 	public static class ObjectExtensions
 	{
-		public static T Instantiate<T>(this T @object) where T : Object {
-			return Object.Instantiate(@object);
-		}
+		public static T Instantiate<T>(this T @object) where T : Object => Object.Instantiate(@object);
 	}
 }
