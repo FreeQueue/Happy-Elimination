@@ -38,8 +38,8 @@ namespace KFramework.Utility
 
 			public static void ResizeSpriteToPixels(SpriteRenderer spriteRenderer, Vector2 desiredSize) {
 				USprite sprite = spriteRenderer.sprite;
-				Vector2 spriteSize = sprite.bounds.size;
-				var scale = new Vector3(desiredSize.x / spriteSize.x, desiredSize.y / spriteSize.y, 1f);
+				Vector2 noScaleSize = spriteRenderer.size*sprite.pixelsPerUnit;
+				var scale = new Vector3(desiredSize.x / noScaleSize.x, desiredSize.y / noScaleSize.y, 1f);
 				spriteRenderer.transform.localScale = scale;
 			}
 		}

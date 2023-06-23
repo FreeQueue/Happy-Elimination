@@ -8,8 +8,8 @@ namespace KFramework
 		public static Direction[] directions = { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
 		public static Vector2Int GetVector(this Direction @this) {
 			return @this switch {
-				Direction.Up => Vector2Int.up,
-				Direction.Down => Vector2Int.down,
+				Direction.Up => Vector2Int.down,
+				Direction.Down => Vector2Int.up,
 				Direction.Right => Vector2Int.right,
 				Direction.Left => Vector2Int.left,
 				_ => Vector2Int.zero

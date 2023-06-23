@@ -14,13 +14,12 @@ namespace Elimination.Core
 	{
 		private Dictionary<Type, BrickTrait> _traits = null!;
 		public BrickMap BrickMap { get; private set; } = null!;
-		[ShowInInspector]
-		public State<int> ID { get; private set; } = null!;
+		[ShowInInspector] public State<int> ID { get; private set; } = null!;
 		[ShowInInspector]
 		public MutableState<Vector2Int> Coord { get; } = new MutableState<Vector2Int>(Vector2Int.zero);
 		public void Init(BrickMap brickMap, int id) {
 			BrickMap = brickMap;
-			ID = new MutableState<int>(id);
+			ID = new State<int>(id);
 			_traits = new Dictionary<Type, BrickTrait>();
 			BrickTrait[]? traits = GetComponents<BrickTrait>();
 			foreach (BrickTrait trait in traits) {
@@ -36,6 +35,7 @@ namespace Elimination.Core
 			return (T?)trait;
 		}
 
-		public Brick? GetOneInDir(Direction direction) => BrickMap.GetInDir(Coord, direction, 1).First();
+		public Brick? GetOneInDir(Direction direction) =>
+			BrickMap.GetInDir(Coord, direction, 1).FirstOrDefault(brick => brick is not null);
 	}
 }

@@ -12,7 +12,7 @@ namespace Elimination.Core.Traits
 	{
 
 		public void Drop() {
-			Brick? down = BrickMap.GetInDir(Coord, Direction.Down).First(brick => brick is not null);
+			Brick? down = BrickMap.GetInDir(Coord, Direction.Down).FirstOrDefault(brick => brick is not null);
 
 			Vector2Int targetCoord
 				= down is null ? Coord.Value.WithY(BrickMap.MaxY) : down.Coord.Value.To(Direction.Up);
@@ -24,27 +24,30 @@ namespace Elimination.Core.Traits
 			if (!BrickMap.Contains(targetCoord)) return;
 			Brick up = GetOrAddUp();
 			up.GetTrait<DropTrait>()?.Drop(targetCoord.To(Direction.Up));
-			BrickMap.Move(Coord, targetCoord);
-			GetTrait<ViewTrait>()?.AfterAll(nameof(ViewTrait.PlayMove), () => {
-				TryFlow();
-			});
+			BrickMap.Move(Brick, targetCoord);
+			TryFlow();
 		}
 
 		private bool TryFlow() {
-			Brick? down = BrickMap.GetInDir(Coord, Direction.Down).First(brick => brick is not null);
+			Brick? down = Brick.GetOneInDir(Direction.Down);
 			if (down is null) return false;
 			Vector2Int? flowCoord = null;
-			if (down.GetOneInDir(Direction.Left) is null) flowCoord = down.Coord.Value.To(Direction.Left);
-			else if (down.GetOneInDir(Direction.Right) is null) flowCoord = down.Coord.Value.To(Direction.Right);
+			if (!BrickMap.IsBoundaryInDir(down.Coord, Direction.Left) &&
+				down.GetOneInDir(Direction.Left) is null)
+				flowCoord = down.Coord.Value.To(Direction.Left);
+			else if (!BrickMap.IsBoundaryInDir(down.Coord, Direction.Right) &&
+					down.GetOneInDir(Direction.Right) is null)
+				flowCoord = down.Coord.Value.To(Direction.Right);
 			if (!flowCoord.HasValue) return false;
 			Brick up = GetOrAddUp();
-			MutableState<Vector2Int> coord = Coord;
-			BrickMap.Move(coord, flowCoord.Value);
+			var coord = Coord.Value;
+			BrickMap.Move(Brick, flowCoord.Value);
 			up.GetTrait<DropTrait>()?.Drop(coord);
 			return true;
 		}
-		private Brick GetOrAddUp() => BrickMap.GetInDir(Coord, Direction.Up)
-										.First(brick => brick is not null) ??
-									BrickMap.Add(Coord.Value.To(Direction.Up), Game.Factory.CreateRandomSweet());
+		private Brick GetOrAddUp() => Brick.GetOneInDir(Direction.Up) ??
+									Game.Factory.CreateRandomSweet().let(brick => {
+										brick.Coord.Value = Coord.Value.To(Direction.Up);
+									});
 	}
 }
