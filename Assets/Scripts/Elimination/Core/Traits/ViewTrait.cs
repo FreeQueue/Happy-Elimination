@@ -1,58 +1,72 @@
 #nullable enable
 
-using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 using KFramework;
+using KFramework.Extensions;
 using KFramework.Utility;
 using UnityEngine;
 
 namespace Elimination.Core.Traits
 {
+	public enum WaitAnim
+	{
+		Move,
+		Fade,
+	}
+
 	[RequireComponent(typeof(SpriteRenderer))]
 	public class ViewTrait : BrickTrait
 	{
 		private SpriteRenderer _spriteRenderer = null!;
-		private TweenManager<string> _tweenManager = null!;
+		private TweenManager<WaitAnim> _tweenManager = null!;
 
 		public Vector3 Position() => Game.View.GetWorldPos(Coord);
 		public override void Init() {
 			_spriteRenderer = GetComponent<SpriteRenderer>();
-			_tweenManager = new TweenManager<string>();
-			Coord.OnChanged += OnCoordChanged;
+			_tweenManager = new();
+			Brick.Coord.OnChanged+=OnCoordChanged;
 			Util.Sprite.ResizeSpriteToPixels(_spriteRenderer, Game.View.GridSize);
 		}
-		public async UniTask Wait() {
-			await _tweenManager.WaitAll();
+
+		public void OnCoordChanged(Vector2Int oldCoord,Vector2Int newCoord) {
+			BrickData data = Game.Data;
+			Vector3 target =  Game.View.GetWorldPos(newCoord);
+			int dis = oldCoord.Step(newCoord);
+			PlayMoveSync(target,data.moveDurationPerUnit*dis,data.moveEase,true);
 		}
-		private void OnCoordChanged(Vector2Int coord) {
-			Vector3 pos = Game.View.GetWorldPos(coord);
-			PlayMove(pos, Game.Data.moveDuration, Game.Data.moveEase, true);
+		public void Move(Vector2Int coord) {
+			transform.position = Game.View.GetWorldPos(coord);
+			Brick.Coord.SetNoFire(coord);
 		}
 
-		public Tween PlayMove(Vector3 position, float duration, Ease ease = Ease.Linear, bool wait = false) {
-			TweenerCore<Vector3, Vector3, VectorOptions>? tween = transform.DOMove(position, duration)
-				.SetEase(ease).SetAutoKill();
-			AddTween(nameof(PlayMove), tween, wait);
+		private Tween PlayMove(Vector3 position, float duration, Ease ease = Ease.Linear) =>
+			transform.DOMove(position, duration).SetEase(ease).SetAutoKill();
+		public Tween PlayMoveSync(Vector3 position, float duration, Ease ease = Ease.Linear, bool wait = false) {
+			Tween tween = PlayMove(position, duration, ease);
+			AddTween(WaitAnim.Move, tween, wait);
 			return tween;
 		}
-
-		public void After(string id, Action action) {
-			_tweenManager.After(id, action).Forget();
+		public async UniTask PlayMoveAsync(
+			Vector3 position, float duration, Ease ease = Ease.Linear, CancellationToken token = default
+		) {
+			await Wait(WaitAnim.Move);
+			await PlayMove(position, duration, ease).WithCancellation(token);
 		}
-		public void AfterAll(string id, Action action) {
-			_tweenManager.AfterAll(id, action).Forget();
-		}
-		public Tween PlayFade(int alpha, float duration, Ease ease = Ease.Linear, bool wait = false) {
-			var tween = _spriteRenderer.DOFade(alpha, duration)
-				.SetEase(ease).SetAutoKill();
-			AddTween(nameof(PlayFade), tween, wait);
+		private Tween PlayFade(int alpha, float duration, Ease ease = Ease.Linear) =>
+			_spriteRenderer.DOFade(alpha, duration).SetEase(ease).SetAutoKill();
+		public Tween PlayFadeSync(int alpha, float duration, Ease ease = Ease.Linear, bool wait = false) {
+			Tween tween = PlayFade(alpha,duration,ease);
+			AddTween(WaitAnim.Fade, tween, wait);
 			return tween;
 		}
-
-		private void AddTween(string id, Tween tween, bool wait) {
+		public async UniTask PlayFadeAsync(
+			int alpha, float duration, Ease ease = Ease.Linear, CancellationToken token = default
+		) => await PlayFade(alpha, duration, ease).WithCancellation(token);
+		public UniTask Wait(WaitAnim id) => _tweenManager.Wait(id);
+		public UniTask WaitAll() => _tweenManager.WaitAll();
+		private void AddTween(WaitAnim id, Tween tween, bool wait) {
 			if (wait) _tweenManager.Add(id, tween);
 			else _tweenManager.Kill(id);
 		}

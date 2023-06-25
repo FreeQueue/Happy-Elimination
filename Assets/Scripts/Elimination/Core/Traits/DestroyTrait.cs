@@ -1,25 +1,31 @@
 #nullable enable
 
 using System;
-using DG.Tweening;
+using Cysharp.Threading.Tasks;
 using KFramework.Extensions;
+using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Elimination.Core.Traits
 {
 	public class DestroyTrait : BrickTrait
 	{
 		public event Action? OnDestroy;
-		public void Destroy() {
+		public async UniTask Destroy() {
 			var brickView = GetTrait<ViewTrait>();
+			var tasks=ListPool<UniTask>.Get();
 			foreach (Brick? neighbor in BrickMap.GetCross(Coord, 1)) {
-				neighbor?.GetTrait<ListenNeighborTrait>()?.OnNeighborDestroy?.Invoke(Brick);
+				var task=neighbor?.GetTrait<ListenNeighborTrait>()?.OnNeighborDestroy?.Invoke(Brick);
+				task?.let(tasks.Add);
 			}
 			BrickMap.Remove(Coord);
-			brickView?.PlayFade(0, Game.Data.fadeDuration, Game.Data.fadeEase)
-				.OnComplete(() => {
-					OnDestroy?.Invoke();
-					Destroy(gameObject);
-				});
+			OnDestroy?.Invoke();
+			if (brickView is not null) {
+				await brickView.PlayFadeAsync(0, Game.Data.fadeDuration, Game.Data.fadeEase);
+			}
+			Destroy(gameObject);
+			await UniTask.WhenAll(tasks);
+			ListPool<UniTask>.Release(tasks);
 		}
 	}
 }

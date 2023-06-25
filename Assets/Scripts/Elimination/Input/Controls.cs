@@ -29,18 +29,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Point"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""9f57f35b-d5dd-4d3d-9574-831977d92d9c"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""PointHold"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""aeba4bfc-e000-44f3-bdb0-a8cbf5a1ca6b"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -50,8 +50,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""cae6a690-dca3-4cc1-bbed-6ef50211b76e"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Point"",
@@ -61,7 +61,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2d27c9eb-c8f7-4bfe-b6c7-24fae5c73be0"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": ""CustomHolding"",
                     ""processors"": """",
                     ""groups"": """",

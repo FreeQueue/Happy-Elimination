@@ -12,7 +12,7 @@ namespace Elimination.Core.Traits
 		#endregion
 
 		private void Destroy() {
-			Game.Score.Value += score;
+			Game.ScoreSystem.Score.Value += score;
 		}
 
 		public override void Init() {

@@ -1,12 +1,13 @@
 #nullable enable
 
 using KFramework;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Elimination.Core
 {
 	[RequireComponent(typeof(Brick))]
-	public abstract class BrickTrait : MonoBehaviour
+	public abstract class BrickTrait : SerializedMonoBehaviour
 	{
 		public Brick Brick { get; private set; } = null!;
 		public MutableState<Vector2Int> Coord => Brick.Coord;

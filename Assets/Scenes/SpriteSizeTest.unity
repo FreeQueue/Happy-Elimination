@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 249418485}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12.075472, y: 7.012987, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -201,8 +201,8 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 2
-  m_Size: {x: 159, y: 154}
+  m_DrawMode: 1
+  m_Size: {x: 1.59, y: 1.54}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -223,7 +223,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 249418488}
   data: {fileID: 11400000, guid: 6035c5b3cc86e524b80d893db4c288da, type: 2}
   tileSize: {x: 1, y: 1}
-  size: {x: 1920, y: 1080}
+  size: {x: 1777.778, y: 1000}
 --- !u!1 &708327843
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +286,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 540
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

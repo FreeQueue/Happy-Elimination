@@ -1,4 +1,5 @@
 #nullable enable
+using Elimination.Audio;
 using Elimination.Input;
 using Elimination.UI;
 using Happy_Elimination.Data;
@@ -16,11 +17,12 @@ namespace Elimination
 		public static UiModule UI => Get<UiModule>();
 		public static MainModule Main => Get<MainModule>();
 		public static DataModule Data => Get<DataModule>();
-
+		public static AudioModule Audio => Get<AudioModule>();
 		#region Event Functions
 		private void Awake() {
-			framework = new Framework();
+			framework = new();
 			framework.Init<DataModule>();
+			framework.Init<AudioModule>();
 			framework.Init<InputModule>();
 			framework.Init<UiModule>();
 			framework.Init<MainModule>();

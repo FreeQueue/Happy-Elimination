@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Elimination.Core
 {
@@ -18,7 +19,7 @@ namespace Elimination.Core
 		public Vector2Int mapViewSize;
 		public int solidSweetNum;
 
-		[Header("Anim")] public float moveDuration;
+		[Header("Anim")] public float moveDurationPerUnit;
 		public Ease moveEase;
 		public float dragDis;
 		public Ease dragEase;

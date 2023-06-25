@@ -13,6 +13,10 @@ namespace KFramework.Extensions
 			return @this;
 		}
 
+		public static async UniTask WaitNotNull(this UniTask? task) {
+			if (task.HasValue) await task.Value;
+		}
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T let<T>(this T @this, Action<T> action) {
 			action(@this);
@@ -33,18 +37,6 @@ namespace KFramework.Extensions
 			not null => action(@this),
 			_ => default
 		};
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static async UniTask<T> let<T>(this T @this, Func<T, UniTask> action) {
-			await action(@this);
-			return @this;
-		}
-
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static async UniTask<T> apply<T>(this T @this, Func<T, UniTask>? action) {
-			if (action is not null) await action(@this);
-			return @this;
-		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async UniTask<TResult> let<T, TResult>(this T @this, Func<T, UniTask<TResult>> action) =>

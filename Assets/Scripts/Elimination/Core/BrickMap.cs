@@ -19,9 +19,7 @@ namespace Elimination.Core
 		}
 
 		private static void OnValueChange(Vector2Int coord, Brick? oldValue, Brick? newValue) {
-			newValue?.let(brick => {
-				brick.Coord.Value = coord;
-			});
+			if (newValue != null) newValue.Coord.Value = coord;
 		}
 	}
 }

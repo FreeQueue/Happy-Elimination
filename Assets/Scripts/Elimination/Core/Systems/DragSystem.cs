@@ -1,5 +1,6 @@
 #nullable enable
 
+using Cysharp.Threading.Tasks;
 using Elimination.Core.Traits;
 using Elimination.Input;
 using KFramework;
@@ -21,6 +22,7 @@ namespace Elimination.Core.Systems
 		}
 
 		private void OnPointHoldStart(Vector2 screenPos) {
+			Debug.LogFormat("OnPointHoldStart{0}",screenPos);
 			Vector2Int coord = Game.View.GetCoord(screenPos);
 			_holdBrick = Game.BrickMap[coord]?.GetTrait<DragTrait>();
 		}
@@ -32,14 +34,17 @@ namespace Elimination.Core.Systems
 			_holdBrick.OnDrag(direction);
 		}
 		private void OnPointHoldEnd(Vector2 screenPos) {
+			Debug.LogFormat("OnPointHoldEnd{0}",screenPos);
 			if (_holdBrick == null) return;
 			Direction? direction = App.Input.LastPointDown.GetDirection(screenPos, 35);
 			if (direction.HasValue) {
 				MutableState<Vector2Int> moveCoord = _holdBrick.Coord;
 				Vector2Int swapCoord = moveCoord + direction.Value.GetVector();
 				Game.BrickMap.Swap(moveCoord, swapCoord);
-				Game.View.WaitAll().GetAwaiter().OnCompleted(() => Game.Eliminator.AfterDrag(moveCoord, swapCoord));
-
+				Game.View.WaitAll().ContinueWith(async () => {
+					await Game.Eliminator.AfterDrag(moveCoord, swapCoord);
+					Game.Input.SetActive(true);
+				}).Forget();
 			} else _holdBrick.Coord.Value = _holdBrick.Coord;
 			_holdBrick = null;
 			Game.Input.SetActive(false);

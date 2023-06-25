@@ -10,8 +10,8 @@ namespace Elimination.Input
 		public readonly Controls controls;
 
 		public InputModule() {
-			controls = new Controls();
-			_actions = new MainGameActions();
+			controls = new();
+			_actions = new();
 			_actions.OnPointDown += screenPos => {
 				LastPointDown = screenPos;
 			};
@@ -19,6 +19,7 @@ namespace Elimination.Input
 				LastPointUp = screenPos;
 			};
 			controls.MainGame.AddCallbacks(_actions);
+			controls.Enable();
 		}
 		public Vector2 LastPointDown { get; private set; }
 		public Vector2 LastPointUp { get; private set; }

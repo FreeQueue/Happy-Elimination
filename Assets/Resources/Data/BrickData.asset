@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTime: 60
   grids: {fileID: 6567038706929863849, guid: 459001460789e7f408df37d40a23c6ae, type: 3}
-  mapSize: {x: 9, y: 9}
+  mapSize: {x: 5, y: 5}
   mapViewSize: {x: 900, y: 900}
-  solidSweetNum: 6
-  moveDuration: 1
-  moveEase: 1
+  solidSweetNum: 4
+  moveDurationPerUnit: 0.4
+  moveEase: 12
   dragDis: 0.5
-  dragEase: 1
+  dragEase: 24
   dragDuration: 0.5
   fadeEase: 1
   fadeDuration: 0.5

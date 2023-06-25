@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3559647937990506338}
   - component: {fileID: 1108158888066388692}
   - component: {fileID: 8758429150972284203}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: SolidSweet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8426122105361148645
 MonoBehaviour:
@@ -157,7 +157,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 202, y: 194}
+  m_Size: {x: 2.02, y: 1.94}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

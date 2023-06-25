@@ -15,7 +15,7 @@ namespace KFramework
 		private bool _disposed;
 		public bool completeOnKill;
 		public TweenManager(bool completeOnKill = true) {
-			_tweenDic = new Dictionary<TId, Tween>();
+			_tweenDic = new();
 			this.completeOnKill = completeOnKill;
 		}
 		public event Action<Tween>? OnAddTween;
@@ -26,17 +26,6 @@ namespace KFramework
 			}).apply(OnAddTween);
 			_tweenDic.Add(id, tween);
 			return tween;
-		}
-
-		public async UniTask After(TId id, Action action) {
-			await Wait(id);
-			action();
-		}
-
-
-		public async UniTask AfterAll(TId id, Action action) {
-			await WaitAll();
-			action();
 		}
 
 		public Tween? Take(TId id) {
@@ -55,7 +44,9 @@ namespace KFramework
 
 		public void Kill(TId id, bool complete) {
 			Tween? tween = Take(id);
-			tween.Kill(complete);
+			if (tween is not null) {
+				tween.Kill(complete);
+			}
 		}
 		public void KillAll() {
 			KillAll(completeOnKill);

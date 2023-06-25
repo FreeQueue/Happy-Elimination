@@ -2,16 +2,18 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Elimination.Core.Traits;
 using KFramework;
 using KFramework.Extensions;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Elimination.Core.Systems
 {
 	public class BrickEliminator
 	{
-		public void EliminateAll() {
+		public async UniTask EliminateAll() {
 			BrickMap brickMap = Game.BrickMap;
 			Grid<int> brickIdMap = brickMap.Transform(brick => {
 				int id = brick?.GetTrait<EliminateTrait>()?.Brick.ID ?? -1;
@@ -21,13 +23,13 @@ namespace Elimination.Core.Systems
 			MarkFlag(brickIdMap, flagMap, true);
 			MarkFlag(brickIdMap, flagMap, false);
 
-			Game.View.WaitAll().GetAwaiter().OnCompleted(() => {
-				EliminateFlagBrick(brickIdMap, flagMap);
-			});
+			await Game.View.WaitAll();
+			await EliminateFlagBrick(brickIdMap, flagMap);
 		}
 
-		private void EliminateFlagBrick(Grid<int> brickIdMap, Grid<int> flagMap) {
+		private async UniTask EliminateFlagBrick(Grid<int> brickIdMap, Grid<int> flagMap) {
 			bool eliminateAny = false;
+			var tasks=ListPool<UniTask>.Get();
 			foreach (Vector2Int coord in brickIdMap.GetCoords()) {
 				if (brickIdMap[coord] == -1) continue;
 				int max = 0;
@@ -41,7 +43,8 @@ namespace Elimination.Core.Systems
 						max = flagMap[current];
 						maxCoord = current;
 					}
-					Eliminate(current);
+					UniTask task= Eliminate(current);
+					tasks.Add(task);
 				}
 				switch (count) {
 					case 0: continue;
@@ -51,12 +54,17 @@ namespace Elimination.Core.Systems
 				}
 				eliminateAny = true;
 			}
-			if (eliminateAny) Game.View.WaitAll().GetAwaiter().OnCompleted(EliminateAll);
-			else Game.Input.SetActive(true);
+			await UniTask.WhenAll(tasks);
+			ListPool<UniTask>.Release(tasks);
+			if (eliminateAny) {
+				await Game.View.WaitAll();
+				await EliminateAll();
+			}
 		}
 
-		private void Eliminate(Vector2Int coord) {
-			Game.BrickMap[coord]?.GetTrait<EliminateTrait>()?.Eliminate();
+		private async UniTask Eliminate(Vector2Int coord) {
+			var task= Game.BrickMap[coord]?.GetTrait<EliminateTrait>()?.Eliminate();
+			await task.WaitNotNull();
 		}
 		private void MarkFlag(Grid<int> brickIdMap, Grid<int> flagMap, bool isX) {
 			for (int x = 0; x < brickIdMap.X; x++) {
@@ -86,13 +94,15 @@ namespace Elimination.Core.Systems
 				}
 			}
 
-			Vector2Int GetCoord(int x, int y) => isX ? new Vector2Int(x, y) : new Vector2Int(y, x);
+			Vector2Int GetCoord(int x, int y) => isX ? new(x, y) : new Vector2Int(y, x);
 		}
 
-		public void AfterDrag(Vector2Int moveCoord, Vector2Int swapCoord) {
-			moveCoord.let(CheckSameBrick)?.let(Eliminate);
-			swapCoord.let(CheckSameBrick)?.let(Eliminate);
-			Game.View.WaitAll().GetAwaiter().OnCompleted(EliminateAll);
+		public async UniTask AfterDrag(Vector2Int moveCoord, Vector2Int swapCoord) {
+			var task1= moveCoord.let(CheckSameBrick)?.let(Eliminate);
+			var task2= swapCoord.let(CheckSameBrick)?.let(Eliminate);
+			await UniTask.WhenAll(task1.WaitNotNull(), task2.WaitNotNull());
+			await Game.View.WaitAll();
+			await EliminateAll();
 		}
 
 		private SameBrick? CheckSameBrick(Vector2Int coord) {
@@ -112,7 +122,7 @@ namespace Elimination.Core.Systems
 			return 0;
 		}
 
-		public void Eliminate(SameBrick sameBrick) {
+		public async UniTask Eliminate(SameBrick sameBrick) {
 			BrickMap brickMap = Game.BrickMap;
 			int numX = sameBrick.NumX(), numY = sameBrick.NumY();
 			List<Brick> eliminatedBricks = new List<Brick>();
@@ -127,6 +137,7 @@ namespace Elimination.Core.Systems
 				eliminatedBricks.AddRange(yBricks);
 			}
 			eliminatedBricks.ForEach(brick => brick.GetTrait<DestroyTrait>()?.Destroy());
+			await Game.View.WaitAll();
 			int sum = numX + numY - 1;
 			if (sum >= 4) brickMap.Add(sameBrick.coord, Game.Factory.CreateSuperSweet(sum));
 		}

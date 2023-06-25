@@ -12,7 +12,7 @@ namespace KFramework.Extensions
 		public static IEnumerable<Vector2Int> GetCoords<T>(this Grid<T> grid) {
 			for (int x = 0; x < grid.X; x++) {
 				for (int y = 0; y < grid.Y; y++) {
-					yield return new Vector2Int(x, y);
+					yield return new(x, y);
 				}
 			}
 		}
@@ -52,9 +52,9 @@ namespace KFramework.Extensions
 			int y = coord.y;
 			return direction switch {
 				Direction.Up => y == 0,
-				Direction.Down => y == grid.Y - 1,
+				Direction.Down => y == grid.MaxY,
 				Direction.Left => x == 0,
-				Direction.Right => y == grid.Y - 1,
+				Direction.Right => x == grid.MaxX,
 				_ => throw new ArgumentException("Invalid direction")
 			};
 		}
@@ -76,15 +76,15 @@ namespace KFramework.Extensions
 		public static IEnumerable<T?> GetCircles<T>(
 			this Grid<T> grid, Vector2Int coord, int distance = int.MaxValue
 		) {
-			return grid.Bfs(coord, (_, current, next) => current.Distance(next) < distance);
+			return grid.Bfs(coord, (_, current, next) => current.Step(next) < distance);
 		}
 
 		public static int GetDistance<T>(this Grid<T> grid, Vector2Int coord, Direction direction) {
 			return direction switch {
 				Direction.Up => coord.y,
-				Direction.Down => grid.Y - coord.y - 1,
+				Direction.Down => grid.MaxY - coord.y,
 				Direction.Left => coord.x,
-				Direction.Right => grid.X - coord.x - 1,
+				Direction.Right => grid.MaxX - coord.x,
 				_ => throw new ArgumentException("Invalid direction")
 			};
 		}

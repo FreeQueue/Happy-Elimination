@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7760386082905382049}
   - component: {fileID: 7922787152439015613}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Shine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,9 +102,8 @@ GameObject:
   - component: {fileID: 5357029329318521909}
   - component: {fileID: 1329876373648684649}
   - component: {fileID: 2482900755242641088}
-  - component: {fileID: 1714657397896959466}
-  - component: {fileID: 2310976332329108046}
-  m_Layer: 5
+  - component: {fileID: 8344633888767101053}
+  m_Layer: 0
   m_Name: SuperSweet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +124,7 @@ Transform:
   m_Children:
   - {fileID: 7760386082905382049}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6903704836444331092
 SpriteRenderer:
@@ -203,6 +202,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98965cc5a724115b84dbfde7fcc06b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &8747295792851800597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +223,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8292fc2f5b2421585a3b8e362c16281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &8888233042258561458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +244,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c4904112fe4916b2d71d772efc15f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   score: 20
 --- !u!114 &882684855246418243
 MonoBehaviour:
@@ -240,6 +266,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28d8d899c04842c7aca6a584e095199c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
 --- !u!114 &5357029329318521909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,6 +287,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65e6052c8110402c8eac5ff7de7e900b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   power: 0
   crossOrCircle: 1
 --- !u!114 &1329876373648684649
@@ -266,6 +310,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ed0a2bcf95486d9380cd0c7e252646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: OnNeighborDestroy
+      Entry: 6
+      Data: 
 --- !u!114 &2482900755242641088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +334,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baadfc2707214f3ea18dec92fa8d69a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1714657397896959466
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+--- !u!114 &8344633888767101053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,25 +352,97 @@ MonoBehaviour:
   m_GameObject: {fileID: 7873112163993402575}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d23ffd292d6ed947ac8f53abed85c62, type: 3}
+  m_Script: {fileID: 11500000, guid: 73e4d56a274f4d7d84ef582a758bd681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: 0, z: -1}
-  rotateDuration: 10
---- !u!114 &2310976332329108046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7873112163993402575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 163e6b7bf6ec4f82ac8a7a6a2ecd4112, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scaleRange1: {x: 0.9, y: 0.9, z: 0.9}
-  ease1: 4
-  scaleRange2: {x: 1.1, y: 1.1, z: 1.1}
-  ease2: 4
-  scaleDuration: 1
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _animations
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[KFramework.Animations.Animation,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 1|Rotate, Assembly-CSharp
+    - Name: rotationAxis
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: -1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: rotateDuration
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|KFramework.Animations.YoYoScale, Assembly-CSharp
+    - Name: scaleRange1
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.9
+    - Name: 
+      Entry: 4
+      Data: 0.9
+    - Name: 
+      Entry: 4
+      Data: 0.9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ease1
+      Entry: 3
+      Data: 4
+    - Name: scaleRange2
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1.1
+    - Name: 
+      Entry: 4
+      Data: 1.1
+    - Name: 
+      Entry: 4
+      Data: 1.1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: ease2
+      Entry: 3
+      Data: 4
+    - Name: scaleDuration
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

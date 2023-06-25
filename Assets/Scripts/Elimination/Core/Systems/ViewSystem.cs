@@ -21,7 +21,7 @@ namespace Elimination.Core.Systems
 			//可视化数据
 			GridSize = data.mapViewSize.Divide(data.mapSize);
 			SetGridsSprite(data);
-			Vector2Int offset = data.mapViewSize / 2;
+			Vector2Int offset = data.mapViewSize / 2-(GridSize/2).RoundToInt();
 			_viewStart = _grids.transform.ToScreenPoint().XY().ToViewSpace() - offset;
 		}
 
@@ -32,28 +32,31 @@ namespace Elimination.Core.Systems
 		}
 
 		public Vector2Int GetCoord(Vector2 screenPos) {
-			Vector2 gridPos = screenPos - _viewStart;
+			Vector2 gridPos = screenPos.ToViewSpace() - _viewStart;
 			// 计算相对于起始点的格子偏移量
 			return gridPos.Divide(GridSize).FloorToInt();
 		}
 
 		public Vector3 GetWorldPos(Vector2Int coord) {
 			// 计算格子中心的屏幕坐标
-			Vector2 gridCenter = _viewStart + coord * GridSize + GridSize / 2;
+			Vector2 gridCenter = _viewStart + coord * GridSize;
 			// 将格子中心的屏幕坐标转换为世界坐标
-			return Util.Screen.GetWorldPos(gridCenter.ToScreenSpace());
+			return Util.Screen.GetWorldPos(gridCenter.ToScreenSpace()).WithZ(0);
 		}
 
 		public async UniTask WaitAll() {
-			foreach (ViewTrait brick in Game.BrickMap.Select(brick => brick?.GetTrait<ViewTrait>()).WhereNotNull()) {
-				await brick.Wait();
+			foreach (ViewTrait viewTrait in
+					Game.BrickMap.Select(brick => brick?.GetTrait<ViewTrait>()).WhereNotNull()) {
+				await viewTrait.WaitAll();
 			}
 		}
 	}
 
 	internal static class ViewSpaceExtensions
 	{
-		public static Vector2 ToViewSpace(this Vector2 screenPos) => screenPos.WithY(Screen.height - screenPos.y);
-		public static Vector2 ToScreenSpace(this Vector2 viewPos) => viewPos.WithY(Screen.height - viewPos.y);
+		public static Vector2 ToViewSpace(this Vector2 screenPos) =>
+			screenPos.WithY(Screen.currentResolution.height - screenPos.y);
+		public static Vector2 ToScreenSpace(this Vector2 viewPos) =>
+			viewPos.WithY(Screen.currentResolution.height - viewPos.y);
 	}
 }

@@ -6,18 +6,18 @@ using UnityEngine;
 
 namespace Elimination.Core.Traits
 {
+	[RequireComponent(typeof(ViewTrait))]
 	public class DragTrait : BrickTrait
 	{
 		public void OnDrag(Direction? direction) {
-			var view = GetTrait<ViewTrait>();
-			if (view is not null) {
-				Vector3 target = view.Position();
-				if (direction.HasValue) {
-					Vector2 offset = (Vector2)direction.Value.GetVector() * Game.Data.dragDis;
-					target = target.AddXY(offset);
-				}
-				view.PlayMove(target, Game.Data.dragDuration, Game.Data.dragEase);
+			var data = Game.Data;
+			var view = GetTrait<ViewTrait>()!;
+			Vector3 target = view.Position();
+			if (direction.HasValue) {
+				Vector2 offset = (Vector2)direction.Value.GetVector() * data.dragDis;
+				target = target.AddXY(offset);
 			}
+			view.PlayMoveSync(target, data.dragDuration, data.dragEase);
 		}
 	}
 }

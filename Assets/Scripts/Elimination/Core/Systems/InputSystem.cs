@@ -1,7 +1,9 @@
 #nullable enable
 
+using Cysharp.Threading.Tasks;
 using Elimination.Core.Traits;
 using Elimination.Input;
+using KFramework.Extensions;
 using UnityEngine;
 
 namespace Elimination.Core.Systems
@@ -12,15 +14,21 @@ namespace Elimination.Core.Systems
 		public readonly MainGameActions actions;
 
 		public InputSystem() {
-			actions = new MainGameActions();
+			actions = new();
 			actions.OnClick += OnClick;
 		}
 		private void OnClick(Vector2 screenPos) {
+			Debug.LogFormat("click{0}",screenPos);
 			Vector2Int coord = Game.View.GetCoord(screenPos);
-			Game.BrickMap[coord]?.GetTrait<ClickTrait>()?.OnClick?.Invoke();
+			if (!Game.BrickMap.Contains(coord)) return;
+			var task = Game.BrickMap[coord]?.GetTrait<ClickTrait>()?.Click();
+			if (task is null) return;
+			SetActive(false);
+			task.Value.GetAwaiter().OnCompleted(() => SetActive(true));
 		}
 
 		public void SetActive(bool input) {
+			Debug.Log($"input active:{input}");
 			if (input)
 				App.Input.controls.MainGame.AddCallbacks(actions);
 			else

@@ -14,18 +14,20 @@ namespace MainPackage
 			});
 		}
 		void IPanel.OnOpen() {
-			Game.Score.OnChanged += OnScoreChanged;
-			Game.Time.OnChanged += OnTimeChanged;
+			_timeLabel._time.text = Game.TimeSystem.Time.ToString();
+			_scoreLabel._score.text = Game.ScoreSystem.Score.ToString();
+			Game.ScoreSystem.Score.OnChanged += OnScoreChanged;
+			Game.TimeSystem.Time.OnChanged += OnTimeChanged;
 		}
 		void IPanel.OnClose() {
-			Game.Score.OnChanged -= OnScoreChanged;
-			Game.Time.OnChanged -= OnTimeChanged;
+			Game.ScoreSystem.Score.OnChanged -= OnScoreChanged;
+			Game.TimeSystem.Time.OnChanged -= OnTimeChanged;
 		}
-		private void OnTimeChanged(int time) {
-			_timeLabel._time.SetVar("time", time.ToString());
+		private void OnTimeChanged(int _, int time) {
+			_timeLabel._time.text = time.ToString();
 		}
-		private void OnScoreChanged(int score) {
-			_scoreLabel._score.SetVar("score", score.ToString());
+		private void OnScoreChanged(int _, int score) {
+			_scoreLabel._score.text = score.ToString();
 		}
 	}
 }
