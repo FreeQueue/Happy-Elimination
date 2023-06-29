@@ -1,16 +1,19 @@
 #nullable enable
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Elimination.Audio;
 using Elimination.Input;
 using Elimination.UI;
 using Happy_Elimination.Data;
 using KFramework;
 using KFramework.Extensions;
+using Sirenix.OdinInspector;
 using UnityEditor;
-using UnityEngine;
 
 namespace Elimination
 {
-	public class App : MonoBehaviour
+	public class App : SerializedMonoBehaviour
 	{
 		public static Framework framework = null!;
 		public static InputModule Input => Get<InputModule>();
@@ -18,9 +21,22 @@ namespace Elimination
 		public static MainModule Main => Get<MainModule>();
 		public static DataModule Data => Get<DataModule>();
 		public static AudioModule Audio => Get<AudioModule>();
+
+		[ShowInInspector] [TypeFilter(nameof(GetModuleTypes))]
+		private Dictionary<Type, Type?> _modules = new();
+
+		public IEnumerable<Type> GetModuleTypes() {
+			var q = typeof(IModule).Assembly.GetTypes()
+				.Where(x => typeof(IModule).IsAssignableFrom(x)); // Excludes classes not inheriting from BaseClass
+			return q;
+		}
+
 		#region Event Functions
 		private void Awake() {
 			framework = new();
+			// foreach (var pair in _modules) {
+			// 	framework.Init(pair.Key, (IModule)Activator.CreateInstance(pair.Value));
+			// }
 			framework.Init<DataModule>();
 			framework.Init<AudioModule>();
 			framework.Init<InputModule>();

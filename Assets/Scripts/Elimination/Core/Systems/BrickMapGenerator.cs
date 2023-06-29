@@ -41,7 +41,7 @@ namespace Elimination.Core.Systems
 			}
 			await UniTask.WhenAll(tasks);
 			ListPool<UniTask>.Release(tasks);
-			await Game.Eliminator.EliminateAll();
+			//await Game.Eliminator.EliminateAll();
 		}
 	}
 }

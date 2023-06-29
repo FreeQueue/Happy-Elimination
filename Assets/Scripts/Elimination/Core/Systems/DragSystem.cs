@@ -38,11 +38,11 @@ namespace Elimination.Core.Systems
 			if (_holdBrick == null) return;
 			Direction? direction = App.Input.LastPointDown.GetDirection(screenPos, 35);
 			if (direction.HasValue) {
-				MutableState<Vector2Int> moveCoord = _holdBrick.Coord;
+				Vector2Int moveCoord = _holdBrick.Coord;
 				Vector2Int swapCoord = moveCoord + direction.Value.GetVector();
 				Game.BrickMap.Swap(moveCoord, swapCoord);
 				Game.View.WaitAll().ContinueWith(async () => {
-					await Game.Eliminator.AfterDrag(moveCoord, swapCoord);
+					await Game.Eliminator.EliminateAll();
 					Game.Input.SetActive(true);
 				}).Forget();
 			} else _holdBrick.Coord.Value = _holdBrick.Coord;

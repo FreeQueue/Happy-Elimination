@@ -11,11 +11,24 @@ namespace KFramework
 		private bool _isShutdown;
 
 		public bool Contains<T>() where T : IModule => _modules.ContainsKey(typeof(T));
-
+		public bool Contains(Type type) => _modules.ContainsKey(type);
 		public T Init<T>() where T : IModule, new() {
 			Type type = typeof(T);
-			if (Contains<T>()) return Get<T>()!;
+			if (Contains<T>()) throw new InvalidOperationException($"Duplicate Module in Type:{type}");
 			var module = new T();
+			_modules.Add(type, module);
+			return module;
+		}
+
+		public IModule Init(Type type,IModule module) {
+			if (Contains(type)) throw new InvalidOperationException($"Duplicate Module in Type:{type}");
+			_modules.Add(type, module);
+			return module;
+		}
+
+		public T Init<T>(T module) where T : IModule {
+			Type type = typeof(T);
+			if (Contains<T>()) throw new InvalidOperationException($"Duplicate Module in Type:{type}");
 			_modules.Add(type, module);
 			return module;
 		}

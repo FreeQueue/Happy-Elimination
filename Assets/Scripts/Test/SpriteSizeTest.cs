@@ -1,8 +1,6 @@
 #nullable enable
 
-using System;
 using Elimination.Core;
-using KFramework.Extensions;
 using KFramework.Utility;
 using Sirenix.OdinInspector;
 using UnityEngine;

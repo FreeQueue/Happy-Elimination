@@ -1,7 +1,5 @@
 #nullable enable
 
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using Elimination.Core.Traits;
 using KFramework;
@@ -97,49 +95,49 @@ namespace Elimination.Core.Systems
 			Vector2Int GetCoord(int x, int y) => isX ? new(x, y) : new Vector2Int(y, x);
 		}
 
-		public async UniTask AfterDrag(Vector2Int moveCoord, Vector2Int swapCoord) {
-			var task1= moveCoord.let(CheckSameBrick)?.let(Eliminate);
-			var task2= swapCoord.let(CheckSameBrick)?.let(Eliminate);
-			await UniTask.WhenAll(task1.WaitNotNull(), task2.WaitNotNull());
-			await Game.View.WaitAll();
-			await EliminateAll();
-		}
-
-		private SameBrick? CheckSameBrick(Vector2Int coord) {
-			Brick? brick = Game.BrickMap[coord];
-			if (brick is null) return null;
-			SameBrick sameBrick;
-			sameBrick.coord = coord;
-			sameBrick.directions = DirectionExtensions.directions
-				.Select(direction => GetSameBrickNumInDir(coord, brick.ID, direction)).ToArray();
-			return sameBrick;
-		}
-
-		private int GetSameBrickNumInDir(Vector2Int coord, int id, Direction direction) {
-			Vector2Int nextCoord = coord + direction.GetVector();
-			Brick? nextBrick = Game.BrickMap[nextCoord];
-			if (nextBrick != null && nextBrick.ID == id) return GetSameBrickNumInDir(nextCoord, id, direction) + 1;
-			return 0;
-		}
-
-		public async UniTask Eliminate(SameBrick sameBrick) {
-			BrickMap brickMap = Game.BrickMap;
-			int numX = sameBrick.NumX(), numY = sameBrick.NumY();
-			List<Brick> eliminatedBricks = new List<Brick>();
-			if (numX >= 3) {
-				IEnumerable<Brick> xBricks = brickMap.GetInDir(sameBrick.coord, Direction.Left)
-					.Concat(brickMap.GetInDir(sameBrick.coord, Direction.Right)).WhereNotNull();
-				eliminatedBricks.AddRange(xBricks);
-			}
-			if (numY >= 3) {
-				IEnumerable<Brick> yBricks = brickMap.GetInDir(sameBrick.coord, Direction.Up)
-					.Concat(brickMap.GetInDir(sameBrick.coord, Direction.Down)).WhereNotNull();
-				eliminatedBricks.AddRange(yBricks);
-			}
-			eliminatedBricks.ForEach(brick => brick.GetTrait<DestroyTrait>()?.Destroy());
-			await Game.View.WaitAll();
-			int sum = numX + numY - 1;
-			if (sum >= 4) brickMap.Add(sameBrick.coord, Game.Factory.CreateSuperSweet(sum));
-		}
+		// public async UniTask AfterDrag(Vector2Int moveCoord, Vector2Int swapCoord) {
+		// 	var task1= moveCoord.let(CheckSameBrick)?.let(Eliminate);
+		// 	var task2= swapCoord.let(CheckSameBrick)?.let(Eliminate);
+		// 	await UniTask.WhenAll(task1.WaitNotNull(), task2.WaitNotNull());
+		// 	await Game.View.WaitAll();
+		// 	await EliminateAll();
+		// }
+		//
+		// private SameBrick? CheckSameBrick(Vector2Int coord) {
+		// 	Brick? brick = Game.BrickMap[coord];
+		// 	if (brick is null) return null;
+		// 	SameBrick sameBrick;
+		// 	sameBrick.coord = coord;
+		// 	sameBrick.directions = DirectionExtensions.directions
+		// 		.Select(direction => GetSameBrickNumInDir(coord, brick.ID, direction)).ToArray();
+		// 	return sameBrick;
+		// }
+		//
+		// private int GetSameBrickNumInDir(Vector2Int coord, int id, Direction direction) {
+		// 	Vector2Int nextCoord = coord + direction.GetVector();
+		// 	Brick? nextBrick = Game.BrickMap[nextCoord];
+		// 	if (nextBrick != null && nextBrick.ID == id) return GetSameBrickNumInDir(nextCoord, id, direction) + 1;
+		// 	return 0;
+		// }
+		//
+		// public async UniTask Eliminate(SameBrick sameBrick) {
+		// 	BrickMap brickMap = Game.BrickMap;
+		// 	int numX = sameBrick.NumX(), numY = sameBrick.NumY();
+		// 	List<Brick> eliminatedBricks = new List<Brick>();
+		// 	if (numX >= 3) {
+		// 		IEnumerable<Brick> xBricks = brickMap.GetInDir(sameBrick.coord, Direction.Left)
+		// 			.Concat(brickMap.GetInDir(sameBrick.coord, Direction.Right)).WhereNotNull();
+		// 		eliminatedBricks.AddRange(xBricks);
+		// 	}
+		// 	if (numY >= 3) {
+		// 		IEnumerable<Brick> yBricks = brickMap.GetInDir(sameBrick.coord, Direction.Up)
+		// 			.Concat(brickMap.GetInDir(sameBrick.coord, Direction.Down)).WhereNotNull();
+		// 		eliminatedBricks.AddRange(yBricks);
+		// 	}
+		// 	eliminatedBricks.ForEach(brick => brick.GetTrait<DestroyTrait>()?.Destroy());
+		// 	await Game.View.WaitAll();
+		// 	int sum = numX + numY - 1;
+		// 	if (sum >= 4) brickMap.Add(sameBrick.coord, Game.Factory.CreateSuperSweet(sum));
+		// }
 	}
 }

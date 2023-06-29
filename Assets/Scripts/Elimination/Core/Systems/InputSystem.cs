@@ -1,9 +1,7 @@
 #nullable enable
 
-using Cysharp.Threading.Tasks;
 using Elimination.Core.Traits;
 using Elimination.Input;
-using KFramework.Extensions;
 using UnityEngine;
 
 namespace Elimination.Core.Systems

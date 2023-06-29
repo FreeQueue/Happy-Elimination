@@ -3,7 +3,6 @@
 using System;
 using Cysharp.Threading.Tasks;
 using KFramework.Extensions;
-using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Elimination.Core.Traits

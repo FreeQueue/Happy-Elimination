@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTime: 60
   grids: {fileID: 6567038706929863849, guid: 459001460789e7f408df37d40a23c6ae, type: 3}
-  mapSize: {x: 5, y: 5}
-  mapViewSize: {x: 900, y: 900}
-  solidSweetNum: 4
+  mapSize: {x: 8, y: 8}
+  mapViewSize: {x: 800, y: 800}
+  solidSweetNum: 5
   moveDurationPerUnit: 0.4
   moveEase: 12
   dragDis: 0.5

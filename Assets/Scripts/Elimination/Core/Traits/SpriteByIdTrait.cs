@@ -1,7 +1,5 @@
 #nullable enable
 
-using Elimination.Core.Systems;
-using KFramework.Utility;
 using UnityEngine;
 
 namespace Elimination.Core.Traits

@@ -2,12 +2,11 @@
 
 using Cysharp.Threading.Tasks;
 using Elimination.Core;
-using KFramework;
 using MainPackage;
 
 namespace Elimination
 {
-	public class MainModule : IModule
+	public class MainModule : IMainModule
 	{
 		public MainModule() {
 			Game.Init();
